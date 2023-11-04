@@ -10,21 +10,25 @@ import javax.swing.JPanel;
 import co.edu.uptc.model.Coordinates;
 import co.edu.uptc.model.Food;
 import co.edu.uptc.model.Obstacule;
+import co.edu.uptc.model.Score;
 import co.edu.uptc.model.Snake;
 
 public class SnakePanel extends JPanel{
 
 	private int squareSize;
 	private Vector<Coordinates> snake;
+	private ScorePanel scorePanel;
 	private Coordinates lastPosition;
 	private Coordinates food;
 	private Coordinates obstacule;
 	private Snake snakeThread;
 	private Food foodThread;
 	private Obstacule obstaculeThread;
+	private Score scoreThread;
 	private Thread threadOne;
 	private Thread threadTwo;
 	private Thread threadThree;
+	private Thread threadFour;
 	private String speed;
 	private String foodSpeed;
 	private String obstaculeSpeed;
@@ -32,7 +36,8 @@ public class SnakePanel extends JPanel{
 	private String size;
 	private ErrorDialog errorDialog;
 
-	public SnakePanel(String speed, String foodSpeed, String obstaculeSpeed, String increase, String size) {
+	public SnakePanel(ScorePanel scorePanel, String speed, String foodSpeed, String obstaculeSpeed, String increase, String size) {
+		this.scorePanel = scorePanel;
 		this.speed = speed;
 		this.foodSpeed = foodSpeed;
 		this.obstaculeSpeed = obstaculeSpeed;
@@ -41,26 +46,55 @@ public class SnakePanel extends JPanel{
 		squareSize = 40;
 		this.startSnake();
 	}
-
+	
 	private void startSnake() {
 		this.paintSnake(this.size);
-
+		
 		this.generateFood();
 		this.generateObstacule();
 		
 		snakeThread = new Snake(this, this.speed, this.increase);
 		foodThread = new Food(this, this.foodSpeed, this.speed);
 		obstaculeThread = new Obstacule(this, this.obstaculeSpeed, this.speed);
-
+		scoreThread = new Score(this, this.speed);
+		
 		this.addKeyListener(snakeThread);
 		this.requestFocus();
-
+		
 		threadOne = new Thread(snakeThread);
 		threadOne.start();
 		threadTwo= new Thread(foodThread);
 		threadTwo.start();
 		threadThree= new Thread(obstaculeThread);
 		threadThree.start();
+		threadFour = new Thread(scoreThread);
+		threadFour.start();
+	}
+
+	private void paintSnake(String size) {
+		snake = new Vector<Coordinates>();
+		if (Integer.parseInt(size)==3) {
+			
+			snake.add(new Coordinates(0, 5));
+			snake.add(new Coordinates(1, 5));
+			snake.add(new Coordinates(2, 5));
+		}else if(Integer.parseInt(size)==4) {
+			snake.add(new Coordinates(0, 5));
+			snake.add(new Coordinates(1, 5));
+			snake.add(new Coordinates(2, 5));
+			snake.add(new Coordinates(3, 5));
+		}else {
+			snake.add(new Coordinates(0, 5));
+			snake.add(new Coordinates(1, 5));
+			snake.add(new Coordinates(2, 5));
+			snake.add(new Coordinates(3, 5));
+			snake.add(new Coordinates(4, 5));
+		}
+		lastPosition=snake.get(snake.size()-1);
+	}
+	
+	public synchronized void uploadScore() {
+		this.scorePanel.setPointsNumber(""+(this.snake.size()-Integer.parseInt(this.size)));
 	}
 	
 	public synchronized void generateFood() {
@@ -81,17 +115,6 @@ public class SnakePanel extends JPanel{
 		}
 		food = foodCoordinates;
 	}
-	
-	public synchronized boolean eatFood(int direction) {
-		boolean flag = false;
-		if (this.lastPosition.getX()==this.food.getX()&&this.lastPosition.getY()==this.food.getY()) {
-			this.moveSnake(direction);
-			this.snake.add(lastPosition);
-			this.foodThread.setTimer(0);
-			flag=true;
-		}
-		return flag;
-	}
 
 	public synchronized void generateObstacule() {
 		Coordinates obstaculeCoordinates = new Coordinates(0, 0);
@@ -111,27 +134,16 @@ public class SnakePanel extends JPanel{
 		}
 		obstacule = obstaculeCoordinates;
 	}
-	
-	private void paintSnake(String size) {
-		snake = new Vector<Coordinates>();
-		if (Integer.parseInt(size)==3) {
 
-			snake.add(new Coordinates(0, 5));
-			snake.add(new Coordinates(1, 5));
-			snake.add(new Coordinates(2, 5));
-		}else if(Integer.parseInt(size)==4) {
-			snake.add(new Coordinates(0, 5));
-			snake.add(new Coordinates(1, 5));
-			snake.add(new Coordinates(2, 5));
-			snake.add(new Coordinates(3, 5));
-		}else {
-			snake.add(new Coordinates(0, 5));
-			snake.add(new Coordinates(1, 5));
-			snake.add(new Coordinates(2, 5));
-			snake.add(new Coordinates(3, 5));
-			snake.add(new Coordinates(4, 5));
+	public synchronized boolean eatFood(int direction) {
+		boolean flag = false;
+		if (this.lastPosition.getX()==this.food.getX()&&this.lastPosition.getY()==this.food.getY()) {
+			this.moveSnake(direction);
+			this.snake.add(lastPosition);
+			this.foodThread.setTimer(0);
+			flag=true;
 		}
-		lastPosition=snake.get(snake.size()-1);
+		return flag;
 	}
 
 	public synchronized void crashObstacule() {
@@ -139,6 +151,7 @@ public class SnakePanel extends JPanel{
 			snakeThread.setState(false);
 			foodThread.setState(false);
 			obstaculeThread.setState(false);
+			scoreThread.setState(false);
 			errorDialog = new ErrorDialog("Te estrellaste :(");
 			errorDialog.setVisible(true);
 		}
@@ -147,13 +160,14 @@ public class SnakePanel extends JPanel{
 				snakeThread.setState(false);
 				foodThread.setState(false);
 				obstaculeThread.setState(false);
+				scoreThread.setState(false);
 				errorDialog = new ErrorDialog("Te auto-estrellaste >:(");
 				errorDialog.setVisible(true);
 				break;
 			}
 		}
 	}
-	
+
 	public synchronized  void moveSnake(int direction) {
 		switch (direction) {
 		case 39:

@@ -3,25 +3,42 @@ package co.edu.uptc.presenter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import co.edu.uptc.exceptions.NotValidException;
+import co.edu.uptc.model.Historial;
 import co.edu.uptc.properties.Configuration;
 import co.edu.uptc.view.ErrorDialog;
+import co.edu.uptc.view.InformationDialog;
 import co.edu.uptc.view.PrincipalFrame;
 
 public class Presenter implements ActionListener{
 
 	private Configuration configuration;
 	private PrincipalFrame principalFrame;
+	private InformationDialog informationDialog;
 	private ErrorDialog errorDialog;
+	private Historial history;
 	
-	public Presenter() {
+	public Presenter(){
 		configuration = new Configuration();
-		principalFrame = new PrincipalFrame(this);
+		principalFrame = new PrincipalFrame(this, this.history);
+		informationDialog = new InformationDialog();
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String source = e.getActionCommand();
 		switch (source) {
+		case "Information": {
+			this.informationDialog.setVisible(true);
+			break;
+		}
+		case "History": {
+			this.principalFrame.showHistoryPanel(this);
+			break;
+		}
+		case "Return": {
+			this.principalFrame.showMenuPanel();
+			break;
+		}
 		case "Play": {
 			this.tryPlay();
 			break;
@@ -57,7 +74,7 @@ public class Presenter implements ActionListener{
 		}
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		new Presenter();
 	}
 }
