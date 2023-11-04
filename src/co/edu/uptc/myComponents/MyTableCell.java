@@ -23,7 +23,7 @@ public class MyTableCell extends DefaultTableCellRenderer{
 			this.setHorizontalAlignment( JLabel.CENTER );
 			this.setText((String) value );
 			this.setBackground(Color.WHITE); 
-			this.setFont(new Font("Times New Roman", Font.PLAIN, 20));   
+			this.setFont(new Font("Monospaced", Font.PLAIN, 20));   
 			this.setForeground(Color.BLACK);
 		}
 		if(type.equals("header")) {
@@ -31,10 +31,9 @@ public class MyTableCell extends DefaultTableCellRenderer{
 			this.setText((String) value );
 			this.setBackground(new Color(205, 228, 238));
 			this.setBorder(new MatteBorder(2, 2, 2, 2, new Color(1, 152, 205, 255)));
-			this.setFont(new Font("Forte", Font.ITALIC, 23));   
+			this.setFont(new Font("Monospaced", Font.BOLD, 23));   
 			this.setForeground(new Color(1, 152, 205, 255));
 		}
 		return this;
 	}
-
 }

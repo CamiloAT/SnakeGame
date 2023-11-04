@@ -39,12 +39,16 @@ public class ScorePanel extends JPanel{
 		returnButton.setBackground(new Color(0, 128, 255));
 		returnButton.setIcon(new ImageIcon("Images/Come_Back.png"));
 		returnButton.setBorder(null);
-		returnButton.setActionCommand("Return");
+		returnButton.setActionCommand("Lose");
 		returnButton.addActionListener(actionListener);
 		add(returnButton);
 	}
 	
 	public void setPointsNumber(String ponits) {
 		pointsLabel.setText(ponits);
+	}
+	
+	public String getScore() {
+		return pointsLabel.getText();
 	}
 }

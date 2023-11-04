@@ -4,9 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Vector;
-
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-
 import co.edu.uptc.model.Coordinates;
 import co.edu.uptc.model.Food;
 import co.edu.uptc.model.Obstacule;
@@ -201,15 +201,20 @@ public class SnakePanel extends JPanel{
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
 		
-		g2d.setColor(new Color(252, 140, 3));
-		g2d.fillRect(squareSize*food.getX(), squareSize*food.getY(), 40, 40);
+		Icon foodIcon = new ImageIcon("Images/Food.png");
+		foodIcon.paintIcon(this, g, squareSize*food.getX(), squareSize*food.getY());
 
 		g2d.setColor(new Color(3, 78, 252));
 		for (Coordinates cords : snake) {
 			g2d.fillRect(squareSize*cords.getX(), squareSize*cords.getY(), 40, 40);
 		}
 		
-		g2d.setColor(new Color(82, 85, 87));
-		g2d.fillRect(squareSize*obstacule.getX(), squareSize*obstacule.getY(), 40, 40);
+		
+		Icon obstaculeIcon = new ImageIcon("Images/Obstacule.png");
+		obstaculeIcon.paintIcon(this, g, squareSize*obstacule.getX(), squareSize*obstacule.getY());
+	}
+	
+	public boolean getStateThread() {
+		return snakeThread.isState();
 	}
 }
