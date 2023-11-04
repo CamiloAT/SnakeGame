@@ -8,6 +8,7 @@ import java.util.Vector;
 import javax.swing.JPanel;
 
 import co.edu.uptc.model.Coordinates;
+import co.edu.uptc.model.Food;
 import co.edu.uptc.model.Snake;
 
 public class SnakePanel extends JPanel{
@@ -18,7 +19,9 @@ public class SnakePanel extends JPanel{
 	private Coordinates food;
 	private Coordinates obstacule;
 	private Snake snakeThread;
+	private Food foodThread;
 	private Thread threadOne;
+	private Thread threadTwo;
 	private String speed;
 	private String foodSpeed;
 	private String obstaculeSpeed;
@@ -38,13 +41,48 @@ public class SnakePanel extends JPanel{
 	private void startSnake() {
 		this.paintSnake(this.size);
 
+		this.generateFood();
+		
 		snakeThread = new Snake(this, this.speed, this.increase);
+		foodThread = new Food(this, this.foodSpeed, this.speed);
 
 		this.addKeyListener(snakeThread);
 		this.requestFocus();
 
 		threadOne = new Thread(snakeThread);
 		threadOne.start();
+		threadTwo= new Thread(foodThread);
+		threadTwo.start();
+	}
+	
+	public synchronized void generateFood() {
+		Coordinates foodCoordinates = new Coordinates(0, 0);
+		boolean alreadyUsed = true;
+		while (alreadyUsed) {
+			foodCoordinates = new Coordinates((int)(Math.random()*22), (int)(Math.random()*13));
+			alreadyUsed=false;
+//			if(obstacule!=null&&foodCoordinates.getX()==obstacule.getX()&&foodCoordinates.getY()==obstacule.getY()) {
+//				alreadyUsed=true;
+//			}
+			for (Coordinates coordinates : snake) {
+				if (coordinates.getX()==foodCoordinates.getX()&&coordinates.getY()==foodCoordinates.getY()) {
+					alreadyUsed=true;
+					break;
+				}
+			}
+		}
+		food = foodCoordinates;
+	}
+	
+	public synchronized boolean eatFood(int direction) {
+		boolean flag = false;
+		if (this.lastPosition.getX()==this.food.getX()&&this.lastPosition.getY()==this.food.getY()) {
+			this.moveSnake(direction);
+			this.snake.add(lastPosition);
+			this.foodThread.setTimer(0);
+			flag=true;
+		}
+		return flag;
 	}
 
 	private void paintSnake(String size) {
@@ -101,6 +139,9 @@ public class SnakePanel extends JPanel{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
+		
+		g2d.setColor(new Color(252, 140, 3));
+		g2d.fillRect(squareSize*food.getX(), squareSize*food.getY(), 40, 40);
 
 		g2d.setColor(new Color(3, 78, 252));
 		for (Coordinates cords : snake) {
