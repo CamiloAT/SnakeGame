@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import co.edu.uptc.model.Coordinates;
 import co.edu.uptc.model.Food;
+import co.edu.uptc.model.Obstacule;
 import co.edu.uptc.model.Snake;
 
 public class SnakePanel extends JPanel{
@@ -20,13 +21,16 @@ public class SnakePanel extends JPanel{
 	private Coordinates obstacule;
 	private Snake snakeThread;
 	private Food foodThread;
+	private Obstacule obstaculeThread;
 	private Thread threadOne;
 	private Thread threadTwo;
+	private Thread threadThree;
 	private String speed;
 	private String foodSpeed;
 	private String obstaculeSpeed;
 	private String increase;
 	private String size;
+	private ErrorDialog errorDialog;
 
 	public SnakePanel(String speed, String foodSpeed, String obstaculeSpeed, String increase, String size) {
 		this.speed = speed;
@@ -42,9 +46,11 @@ public class SnakePanel extends JPanel{
 		this.paintSnake(this.size);
 
 		this.generateFood();
+		this.generateObstacule();
 		
 		snakeThread = new Snake(this, this.speed, this.increase);
 		foodThread = new Food(this, this.foodSpeed, this.speed);
+		obstaculeThread = new Obstacule(this, this.obstaculeSpeed, this.speed);
 
 		this.addKeyListener(snakeThread);
 		this.requestFocus();
@@ -53,6 +59,8 @@ public class SnakePanel extends JPanel{
 		threadOne.start();
 		threadTwo= new Thread(foodThread);
 		threadTwo.start();
+		threadThree= new Thread(obstaculeThread);
+		threadThree.start();
 	}
 	
 	public synchronized void generateFood() {
@@ -61,9 +69,9 @@ public class SnakePanel extends JPanel{
 		while (alreadyUsed) {
 			foodCoordinates = new Coordinates((int)(Math.random()*22), (int)(Math.random()*13));
 			alreadyUsed=false;
-//			if(obstacule!=null&&foodCoordinates.getX()==obstacule.getX()&&foodCoordinates.getY()==obstacule.getY()) {
-//				alreadyUsed=true;
-//			}
+			if(obstacule!=null&&foodCoordinates.getX()==obstacule.getX()&&foodCoordinates.getY()==obstacule.getY()) {
+				alreadyUsed=true;
+			}
 			for (Coordinates coordinates : snake) {
 				if (coordinates.getX()==foodCoordinates.getX()&&coordinates.getY()==foodCoordinates.getY()) {
 					alreadyUsed=true;
@@ -85,6 +93,25 @@ public class SnakePanel extends JPanel{
 		return flag;
 	}
 
+	public synchronized void generateObstacule() {
+		Coordinates obstaculeCoordinates = new Coordinates(0, 0);
+		boolean alreadyUsed = true;
+		while (alreadyUsed) {
+			obstaculeCoordinates = new Coordinates((int)(Math.random()*22), (int)(Math.random()*13));
+			alreadyUsed=false;
+			if(obstaculeCoordinates.getX()==food.getX()&&obstaculeCoordinates.getY()==food.getY()) {
+				alreadyUsed=true;
+			}
+			for (Coordinates coordinates : snake) {
+				if (coordinates.getX()==obstaculeCoordinates.getX()&&coordinates.getY()==obstaculeCoordinates.getY()) {
+					alreadyUsed=true;
+					break;
+				}
+			}
+		}
+		obstacule = obstaculeCoordinates;
+	}
+	
 	private void paintSnake(String size) {
 		snake = new Vector<Coordinates>();
 		if (Integer.parseInt(size)==3) {
@@ -107,6 +134,26 @@ public class SnakePanel extends JPanel{
 		lastPosition=snake.get(snake.size()-1);
 	}
 
+	public synchronized void crashObstacule() {
+		if (this.lastPosition.getX()==this.obstacule.getX()&&this.lastPosition.getY()==this.obstacule.getY()) {
+			snakeThread.setState(false);
+			foodThread.setState(false);
+			obstaculeThread.setState(false);
+			errorDialog = new ErrorDialog("Te estrellaste :(");
+			errorDialog.setVisible(true);
+		}
+		for (int i = 0; i < snake.size()-1; i++) {
+			if (this.lastPosition.getX()==snake.get(i).getX()&&this.lastPosition.getY()==snake.get(i).getY()) {
+				snakeThread.setState(false);
+				foodThread.setState(false);
+				obstaculeThread.setState(false);
+				errorDialog = new ErrorDialog("Te auto-estrellaste >:(");
+				errorDialog.setVisible(true);
+				break;
+			}
+		}
+	}
+	
 	public synchronized  void moveSnake(int direction) {
 		switch (direction) {
 		case 39:
@@ -147,5 +194,8 @@ public class SnakePanel extends JPanel{
 		for (Coordinates cords : snake) {
 			g2d.fillRect(squareSize*cords.getX(), squareSize*cords.getY(), 40, 40);
 		}
+		
+		g2d.setColor(new Color(82, 85, 87));
+		g2d.fillRect(squareSize*obstacule.getX(), squareSize*obstacule.getY(), 40, 40);
 	}
 }

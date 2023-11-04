@@ -28,7 +28,10 @@ public class Snake implements Runnable, KeyListener{
 		while (state) {
 			this.snakePanel.requestFocusInWindow();
 			this.snakePanel.moveSnake(direction);
-			this.snakePanel.eatFood(direction);
+			this.snakePanel.crashObstacule();
+			if (this.snakePanel.eatFood(direction)&&Integer.parseInt(this.speed)>50) {
+				this.speed=""+(Integer.parseInt(this.speed)-Integer.parseInt(increase));
+			}
 			this.snakePanel.repaint();
 			try {
 				Thread.sleep(Integer.parseInt(speed));
