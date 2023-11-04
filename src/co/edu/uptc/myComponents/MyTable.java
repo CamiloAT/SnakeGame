@@ -2,7 +2,6 @@ package co.edu.uptc.myComponents;
 
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumnModel;
 
 public class MyTable extends JTable{
 

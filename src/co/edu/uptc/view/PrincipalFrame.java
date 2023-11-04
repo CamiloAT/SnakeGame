@@ -3,13 +3,9 @@ package co.edu.uptc.view;
 import java.awt.CardLayout;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import co.edu.uptc.model.Historial;
 import co.edu.uptc.model.HistorialRow;
 
 public class PrincipalFrame extends JFrame{
@@ -21,7 +17,7 @@ public class PrincipalFrame extends JFrame{
 	private JPanel cardLayout;
 	private CardLayout card;
 
-	public PrincipalFrame(ActionListener actionListener, Historial historial) {
+	public PrincipalFrame(ActionListener actionListener) {
 		super("Snake Game");
 		this.setIconImage(new ImageIcon("Images/Snake.png").getImage());
 		this.setSize(893,616);
@@ -52,6 +48,10 @@ public class PrincipalFrame extends JFrame{
 		cardLayout.repaint();
 	}
 
+	public String getNamePlayer() {
+		return menuPanel.getNamePlayer();
+	}
+	
 	public String getWorldCombo() {
 		return menuPanel.getWorldCombo();
 	}
@@ -83,4 +83,12 @@ public class PrincipalFrame extends JFrame{
 	public void addRow(HistorialRow historial) {
 		this.historyPanel.addRow(historial);	
 	}	
+	
+	public boolean getStateThread() {
+		return gamePanel.getStateThread();
+	}
+	
+	public String getScore() {
+		return gamePanel.getScore();
+	}
 }

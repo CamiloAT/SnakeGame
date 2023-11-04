@@ -135,6 +135,10 @@ public class MenuPanel extends JPanel{
 		return word;
 	}
 	
+	public String getNamePlayer() {
+		return nameTextField.getText();
+	}
+	
 	public boolean isNameEmpty() {
 		boolean flag=false;
 		if(nameTextField.getText().length()==0) {

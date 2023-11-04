@@ -43,4 +43,12 @@ public class GamePanel extends JPanel{
 		add(fieldPanel);
 		fieldPanel.setBounds(0, 60, 893, 556);
 	}
+	
+	public boolean getStateThread() {
+		return snakePanel.getStateThread();
+	}
+	
+	public String getScore() {
+		return scorePanel.getScore();
+	}
 }

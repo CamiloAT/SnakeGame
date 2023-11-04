@@ -1,0 +1,53 @@
+{
+  "historials": [
+    {
+      "name": "Camilo",
+      "date": "2023-11-04",
+      "hour": "04:01:23",
+      "score": "11",
+      "level": "Dificil"
+    },
+    {
+      "name": "Camilo",
+      "date": "2023-11-04",
+      "hour": "16:27:23",
+      "score": "0",
+      "level": "Dificil"
+    },
+    {
+      "name": "Karol",
+      "date": "2023-11-04",
+      "hour": "16:29:47",
+      "score": "0",
+      "level": "Facil"
+    },
+    {
+      "name": "Karol",
+      "date": "2023-11-04",
+      "hour": "16:48:30",
+      "score": "1",
+      "level": "Dificil"
+    },
+    {
+      "name": "Camilo",
+      "date": "2023-11-04",
+      "hour": "16:50:00",
+      "score": "0",
+      "level": "Dificil"
+    },
+    {
+      "name": "Camilo",
+      "date": "2023-11-04",
+      "hour": "16:50:51",
+      "score": "6",
+      "level": "Dificil"
+    },
+    {
+      "name": "Juan",
+      "date": "2023-11-04",
+      "hour": "17:05:15",
+      "score": "12",
+      "level": "Dificil"
+    }
+  ]
+}

@@ -2,7 +2,6 @@ package co.edu.uptc.model;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import co.edu.uptc.view.SnakePanel;
 
 public class Snake implements Runnable, KeyListener{
