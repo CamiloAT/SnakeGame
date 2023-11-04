@@ -1,0 +1,15 @@
+easy.time=800
+easy.food=20000
+easy.obstacule=8000
+easy.increase=20
+easy.size=5
+medium.time=500
+medium.food=1000
+medium.obstacule=6000
+medium.increase=25
+medium.size=4
+difficult.time=200
+difficult.food=4000
+difficult.obstacule=2000
+difficult.increase=30
+difficult.size=3
