@@ -1,14 +1,15 @@
 package co.edu.uptc.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionListener;
-
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel{
 	
 	private FieldPanel fieldPanel;
 	private SnakePanel snakePanel;
+	private ScorePanel scorePanel;
 	private String speed;
 	private String food;
 	private String obstacule;
@@ -27,7 +28,12 @@ public class GamePanel extends JPanel{
 	private void initComponents(ActionListener actionListener) {
 		this.setLayout(null);
 		
-		snakePanel = new SnakePanel(this.speed, this.food, this.obstacule, this.increase, this.size);
+		scorePanel = new ScorePanel(actionListener);
+		scorePanel.setBackground(new Color(0, 128, 255));
+		scorePanel.setBounds(0, 0, 893, 60);
+		add(scorePanel);
+		
+		snakePanel = new SnakePanel(this.scorePanel, this.speed, this.food, this.obstacule, this.increase, this.size);
 		add(snakePanel, BorderLayout.CENTER);
 		snakePanel.setBounds(0, 60, 893, 556);
 		snakePanel.setOpaque(false);
