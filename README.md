@@ -1,6 +1,6 @@
 # SnakeGame
 <h1 align="center"> Version JDK </h1>
-<p align="center"> Este proyecto está configurado para utilizar Java Development Kit (JDK) versión 1.8. </p>
+<h2 align="center"> <em>Este proyecto está configurado para utilizar Java Development Kit (JDK) versión 1.8.</em> </h2>
 <h1 align="center"> Este trabajo fue realizado por el estudiante:</h1>
 <h2 align="center"> <em>Camilo Andres Arias Tenjo - 202210549</em> </h2>
 <h1 align="center"> Estrategia Score:</h1>
@@ -16,3 +16,5 @@
 <h2 align="center"> <em>Files/Config.txt</em> </h2>
 <h1 align="center"> Ruta del archivo Data.JSON(Serializado):</h1>
 <h2 align="center"> <em>Files/Data.JSON</em> </h2>
+<h1 align="center"> Funcionamiento de Informacion e historial:</h1>
+<h2 align="center"> <em>Se puede acceder a estas ventanas haciendo uso de los botones ubicados en la parte superior derecha del menu</em> </h2>
